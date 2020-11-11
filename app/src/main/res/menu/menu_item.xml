@@ -3,10 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/item_forward"
-        android:title="Forward 10 seconds"
+        android:title="Seek forward 10 seconds"
         app:showAsAction="never" />
     <item
-        android:id="@+id/item_saveAs"
-        android:title="Save As"
+        android:id="@+id/item_backward"
+        android:title="Seek backward 10 seconds"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/item_share"
+        android:title="Share"
         app:showAsAction="never" />
 </menu>

@@ -1,8 +1,11 @@
 package com.erdalguzel.simplevideoview
 
+import android.content.ComponentName
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.Menu
 import android.view.MenuItem
 import android.webkit.URLUtil
@@ -11,6 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
+import java.io.File
+import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
 
@@ -92,10 +102,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getMedia(mediaName: String): Uri? {
-        if (URLUtil.isValidUrl(mediaName)) {
-            return Uri.parse(mediaName)
+        return if (URLUtil.isValidUrl(mediaName)) {
+            Uri.parse(mediaName)
         } else {
-            return Uri.parse("android.resource://$packageName/raw/$mediaName")
+            Uri.parse("android.resource://$packageName/raw/$mediaName")
         }
     }
 
@@ -112,10 +122,21 @@ class MainActivity : AppCompatActivity() {
                 mVideoView.seekTo(mVideoView.currentPosition + 10 * 1000)
                 return true
             }
-            R.id.item_saveAs -> {
+            R.id.item_backward -> {
+                mVideoView.seekTo(mVideoView.currentPosition - 10 * 1000)
+                return true
+            }
+            R.id.item_share -> {
+                ShareCompat.IntentBuilder
+                    .from(this)
+                    .setType("video/mp4")
+                    .setChooserTitle("Share this media with:")
+                    .setStream(getMedia(VIDEO_SAMPLE))
+                    .startChooser()
                 return true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 }
